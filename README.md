@@ -2,7 +2,7 @@
 
 Four independent creative directions for reimagining the HP Newsroom, each built as a working, clickable prototype (not a static mock).
 
-**Live:** [hp-newsroom.vercel.app](https://hp-newsroom.vercel.app/)
+**Live:** [lisalucyliu.github.io/hp-newsroom-redesign](https://lisalucyliu.github.io/hp-newsroom-redesign/)
 
 ## Directions
 
