@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HP Newsroom — Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ===================================================================
+     BRAND TOKENS — pulled from HP Technical Guidelines (brand-tokens.md)
+     Font substitution note: HP Forma DJR is a licensed font not available
+     for a quick web prototype. Archivo (headlines) + Inter (body) stand
+     in as free geometric sans-serifs. Swap for HP Forma DJR UI later.
+
+     LAYOUT RULE (lesson carried over from the Field Notes build): never
+     put a `padding` shorthand on an element that also carries `.wrap`
+     for its left/right gutter — the shorthand overwrites all four sides
+     and silently zeroes the gutter. Every section below uses
+     padding-top/padding-bottom only for that reason.
+     =================================================================== */
+  :root{
+    --electric-blue:#024AD8;
+    --electric-blue-9:#0E3191;
+    --electric-blue-1:#C9E0FC;
+    --electric-blue-0:#E4EEFA;
+    --orange-bloom-5:#FF5050;
+    --black:#000000;
+    --white:#FFFFFF;
+    --ink:#141416;
+    --paper:#FFFFFF;
+    --recessed:#F3F3F1;
+    --stories-tint:#F6F8FC;
+    --headline-font:'Archivo', sans-serif;
+    --body-font:'Inter', sans-serif;
+    --gutter: clamp(24px, 6vw, 96px);
+    /* Studio sticky note: "each story is situated in a no-border rounded
+       card with a subtle shadow ... homage to physical products ...
+       classic Apple skeuomorphism". And: "very clean minimal visual
+       treatment, strict no borders (use subtle shadows instead)". */
+    --radius: 22px;
+    --shadow-card: 0 1px 2px rgba(0,0,0,.04), 0 12px 28px rgba(20,20,22,.08);
+    --shadow-card-hover: 0 1px 2px rgba(0,0,0,.05), 0 22px 40px rgba(20,20,22,.13);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:var(--body-font); color:var(--ink); background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+  img,svg{display:block; max-width:100%;}
+  .wrap{max-width:1240px; margin:0 auto; padding:0 var(--gutter);}
+
+  /* ---------- minimal masthead: quiet, no border, no dropdown sprawl ----------
+     Sticky note: header should read like Apple Newsroom's — approx. 52px
+     tall, fixed height rather than padding-driven, so it stays sleek. */
+  .masthead{
+    display:flex; align-items:center; justify-content:space-between;
+    height:52px; padding:0 var(--gutter);
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.045); /* hairline via shadow, not a border */
+  }
+  .brand-lockup{display:flex; align-items:center; gap:10px;}
+  .hp-logo{width:22px; height:22px; flex-shrink:0;}
+  .brand-lockup .name{font-family:var(--headline-font); font-weight:700; font-size:16px; letter-spacing:-0.2px;}
+  .quiet-nav{display:flex; align-items:center; gap:34px; font-size:13.5px; font-weight:500; color:#555;}
+  .quiet-nav a:hover{color:var(--ink);}
+  .quiet-nav a.active{color:var(--ink); font-weight:600;}
+
+  /* ---------- hero: one story, full-bleed, quiet oversized type ---------- */
+  .hero{
+    position:relative; min-height:86vh; display:flex; align-items:flex-end;
+    background: linear-gradient(0deg, rgba(3,8,26,.86), rgba(3,8,26,.18) 46%),
+      url("https://www.hp.com/content/dam/hpi/newsroom/press/evergreen-banners/garage-hero-3.jpg") center/cover no-repeat,
+      #051033;
+    color:var(--white);
+  }
+  .hero-inner{padding:0 var(--gutter) 72px; max-width:920px;}
+  .hero-eyebrow{font-family:var(--headline-font); font-weight:600; font-size:12.5px; letter-spacing:2.5px; text-transform:uppercase; color:var(--electric-blue-1); margin-bottom:18px;}
+  .hero h1{font-family:var(--headline-font); font-weight:700; font-size:clamp(34px,4.6vw,58px); line-height:1.08; letter-spacing:-0.5px;}
+  .hero p{font-size:17px; color:#e2e6f2; max-width:600px; margin-top:18px; line-height:1.55; font-weight:400;}
+
+  /* Stripe System as a one-time scroll-triggered transition device,
+     not a looping animation — "premium pacing" means restraint. Mostly
+     Electric Blue with a single thin Orange Bloom sliver, matching the
+     blue-dominant balance fix from the Field Notes build. */
+  .stripe-divider{height:64px; position:relative; overflow:hidden; background:var(--paper);}
+  .stripe-divider .bar{
+    position:absolute; top:0; height:100%; background:var(--electric-blue);
+    transform:translateX(-110%); transition:transform 1s cubic-bezier(.2,.8,.2,1);
+  }
+  .stripe-divider.in-view .bar{transform:translateX(0);}
+  .stripe-divider .bar.b1{left:0; width:55%; transition-delay:.05s;}
+  .stripe-divider .bar.b2{left:55%; width:30%; background:var(--electric-blue-9); transition-delay:.16s;}
+  .stripe-divider .bar.b3{left:85%; width:8%; background:var(--orange-bloom-5); opacity:.7; transition-delay:.28s;}
+
+  /* ---------- section scaffolding ---------- */
+  .section{padding-top:88px; padding-bottom:88px;}
+  .section-head{margin-bottom:40px; max-width:640px;}
+  .section-head .kicker{font-family:var(--headline-font); font-weight:600; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:#888; margin-bottom:10px;}
+  .section-head h2{font-family:var(--headline-font); font-weight:700; font-size:32px; letter-spacing:-0.5px; line-height:1.15;}
+  .section-head p{font-size:15px; color:#666; margin-top:10px; line-height:1.55;}
+
+  /* ---------- the one card component, reused at different scales ----------
+     Sticky note: "less important stories = smaller card, but still the
+     same card." Same class, a size modifier changes scale only. */
+  .story-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:28px;}
+  .card{
+    border-radius:var(--radius); overflow:hidden; background:var(--white);
+    box-shadow:var(--shadow-card); transition:box-shadow .35s ease;
+  }
+  .card:hover{box-shadow:var(--shadow-card-hover);}
+  .card-media{aspect-ratio:4/3; position:relative; overflow:hidden;}
+  .card-media .bg{position:absolute; inset:0; background-size:cover; background-position:center; background-color:#0A2162; transition:transform .6s cubic-bezier(.2,.7,.3,1);}
+  .card:hover .card-media .bg{transform:scale(1.06);}
+  .card-body{padding:22px;}
+  .card .kicker{font-family:var(--headline-font); font-weight:600; font-size:11px; letter-spacing:1.4px; text-transform:uppercase; color:var(--electric-blue); margin-bottom:10px;}
+  .card h3{
+    font-family:var(--headline-font); font-weight:700; font-size:19px; line-height:1.3; letter-spacing:-0.2px;
+    text-decoration-line:underline; text-decoration-color:transparent;
+    text-decoration-thickness:2px; text-underline-offset:4px;
+    transition:text-decoration-color .3s ease;
+  }
+  .card:hover h3{text-decoration-color:currentColor;}
+  .card p{font-size:13.5px; color:#666; margin-top:8px; line-height:1.5;}
+
+  /* size modifier for the SAME card, used in the "lesser stories" section */
+  .card.small .card-body{padding:16px;}
+  .card.small h3{font-size:15px;}
+  .card.small .kicker{font-size:10px;}
+
+  /* ---------- special section for human stories ----------
+     Sticky note: "special section for human stories" — its own tinted
+     background sets it apart from the neutral news sections around it. */
+  .stories-section{background:var(--stories-tint); padding-top:88px; padding-bottom:88px;}
+  .stories-feature{
+    display:grid; grid-template-columns:1.1fr 1fr; gap:48px; align-items:center;
+    background:var(--white); border-radius:32px; box-shadow:var(--shadow-card); overflow:hidden;
+  }
+  .stories-feature .sf-media{aspect-ratio:5/4; background-size:cover; background-position:center;}
+  .stories-feature .sf-body{padding:48px 48px 48px 0;}
+  .stories-feature .kicker{font-family:var(--headline-font); font-weight:600; font-size:11px; letter-spacing:1.4px; text-transform:uppercase; color:var(--electric-blue); margin-bottom:14px;}
+  .stories-feature h3{font-family:var(--headline-font); font-weight:700; font-size:26px; line-height:1.25; letter-spacing:-0.3px;}
+  .stories-feature p{font-size:15px; color:#555; margin-top:14px; line-height:1.6;}
+  .stories-feature .quote{font-family:var(--headline-font); font-weight:600; font-size:15px; color:var(--ink); margin-top:20px; padding-left:16px; box-shadow:inset 3px 0 0 var(--electric-blue-1);}
+
+  /* ---------- vertical "stories" row (Instagram Stories-style) ----------
+     Sticky note: "vertical cards similar to instagram stories on the
+     phone. Really cool implementation, leans into physical media." */
+  .vstories-row{display:flex; gap:18px; overflow-x:auto; padding:6px 2px 14px;}
+  .vcard{
+    flex:0 0 170px; aspect-ratio:9/16; border-radius:20px; overflow:hidden; position:relative;
+    box-shadow:var(--shadow-card);
+  }
+  .vcard .bg{position:absolute; inset:0; background-size:cover; background-position:center; transition:transform .6s ease;}
+  .vcard:hover .bg{transform:scale(1.06);}
+  .vcard .ring{position:absolute; top:12px; left:12px; right:12px; height:3px; border-radius:3px; background:rgba(255,255,255,.35); overflow:hidden;}
+  .vcard .ring::after{content:""; display:block; width:70%; height:100%; background:var(--white);}
+  .vcard .vlabel{position:absolute; left:14px; right:14px; bottom:14px; color:var(--white); font-family:var(--headline-font); font-weight:600; font-size:13px; line-height:1.3; text-shadow:0 2px 10px rgba(0,0,0,.5);}
+
+  /* ---------- lesser news: same card, recessed background ----------
+     Sticky note: "lesser news stories section = slightly darker
+     background, recessed effect." */
+  .recessed-section{background:var(--recessed); padding-top:80px; padding-bottom:80px;}
+  .recessed-section .story-grid{grid-template-columns:repeat(4,1fr); gap:20px;}
+
+  /* ---------- "more" section: deliberately minimal, plain text links ----------
+     Sticky note: "'more' section, minimal styling." */
+  .more-section{padding-top:72px; padding-bottom:96px;}
+  .more-list{display:flex; flex-direction:column; max-width:640px;}
+  .more-list a{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 0; font-family:var(--headline-font); font-weight:600; font-size:17px;
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.06);
+    color:var(--ink);
+  }
+  .more-list a span.arrow{font-family:var(--body-font); font-weight:400; color:#999; transition:transform .25s ease;}
+  .more-list a:hover span.arrow{transform:translateX(4px); color:var(--electric-blue);}
+
+  footer{padding:36px var(--gutter); box-shadow: inset 0 1px 0 rgba(0,0,0,.045); font-size:12.5px; color:#888; display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px;}
+
+  @media (max-width:900px){
+    .story-grid{grid-template-columns:1fr 1fr;}
+    .recessed-section .story-grid{grid-template-columns:1fr 1fr;}
+    .stories-feature{grid-template-columns:1fr;}
+    .stories-feature .sf-body{padding:0 28px 32px;}
+    .quiet-nav{gap:18px; font-size:12.5px;}
+  }
+  @media (max-width:600px){
+    .story-grid, .recessed-section .story-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="brand-lockup">
+    <svg class="hp-logo" viewBox="0 0 32 32" fill="var(--electric-blue)" aria-label="HP logo">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M16.04 0 12.6 9.65h2.34c1.69 0 2.4 1.33 1.87 2.82l-3.42 9.6H9.95L13.7 11.5h-1.77L8.17 22.07H4.7L12.43.4a16 16 0 0 0-.33 31.12L19.9 9.6h5.66c1.17 0 2.64.79 2 2.58l-3.17 8.97c-.4 1.14-1.37 1.37-2.14 1.37h-3.48L15.4 32l.6.01a16 16 0 0 0 .04-32Zm6.67 11.48-3.28 9.2h1.74l3.28-9.2h-1.74Z"></path>
+    </svg>
+    <span class="name">Newsroom</span>
+  </div>
+  <nav class="quiet-nav">
+    <a href="#" class="active">Newsroom</a>
+    <a href="#">Stories</a>
+    <a href="#">Press</a>
+  </nav>
+</div>
+
+<a href="studio-article.html" style="display:block;">
+<header class="hero">
+  <div class="hero-inner">
+    <span class="hero-eyebrow">News &amp; Announcements</span>
+    <h1>HP and OpenAI. Building the future of work together.</h1>
+    <p>Frontier is now part of how HP works — and how HP's customers work.</p>
+  </div>
+</header>
+</a>
+
+<div class="stripe-divider" id="stripeDivider">
+  <div class="bar b1"></div>
+  <div class="bar b2"></div>
+  <div class="bar b3"></div>
+</div>
+
+<main>
+  <section class="section wrap">
+    <div class="section-head">
+      <div class="kicker">Latest</div>
+      <h2>What's new</h2>
+    </div>
+    <div class="story-grid">
+      <a class="card" href="#">
+        <div class="card-media"><div class="bg" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-releases/2026/hp-shifts-into-a-new-gear-with-ferrari,-fueling-pc-innovation-with-shared-design-and-engineering-vision/HP%20Limited%20Edition%20Scuderia%20Ferrari%20AI%20PC_BlackBG%20(002).png');"></div></div>
+        <div class="card-body">
+          <div class="kicker">News &amp; Announcements</div>
+          <h3>HP shifts into a new gear with Ferrari, fueling PC innovation</h3>
+          <p>A shared design and engineering vision, plus a limited-edition Scuderia Ferrari AI PC.</p>
+        </div>
+      </a>
+      <a class="card" href="#">
+        <div class="card-media"><div class="bg" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-releases/2026/hp-debuts-pcs-built-for-the-agentic-ai-era/HP%20-%20Omnibook%20Press%20Release%20(1).png');"></div></div>
+        <div class="card-body">
+          <div class="kicker">Innovation</div>
+          <h3>HP debuts PCs built for the agentic AI era, powered by NVIDIA RTX Spark™</h3>
+          <p>Announced at Computex 2026, built for the next wave of Windows PC experiences.</p>
+        </div>
+      </a>
+      <a class="card" href="#">
+        <div class="card-media"><div class="bg" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-blogs/2026/hp-and-adobe-bring-digital-twin-capture-built-for-scale-/Z%20Portfolio_CAPTIS_1920_Lifestyle.png');"></div></div>
+        <div class="card-body">
+          <div class="kicker">Innovation</div>
+          <h3>HP and Adobe bring digital twin capture built for scale</h3>
+          <p>HP Z Captis, with Adobe Substance 3D Sampler and NVIDIA Jetson AI inference.</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="stories-section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">Customer Stories</div>
+        <h2>The people behind the headlines</h2>
+        <p>News tells you what happened. This is where HP shows who it happened for.</p>
+      </div>
+      <a class="stories-feature" href="#">
+        <div class="sf-media" style="background-image:url('https://www.hp.com/content/dam/sites/worldwide/solutions/ulster-case-study/hero_banner@2x.jpg');"></div>
+        <div class="sf-body">
+          <div class="kicker">Customer Story</div>
+          <h3>How Ulster University kept 3,000 staff connected across every campus</h3>
+          <p>HP Managed Collaboration Services gave a growing UK university one consistent, secure experience across three campuses and 30,000 students.</p>
+          <div class="quote">"Selecting a company you can sit down and work with ... is paramount." — Terence Nicholl, Head of Infrastructure and Operations, Ulster University</div>
+        </div>
+      </a>
+
+      <div class="vstories-row" style="margin-top:40px;">
+        <div class="vcard">
+          <div class="bg" style="background-image:url('https://www.hp.com/content/dam/sites/worldwide/solutions/ulster-case-study/terence_nicholl_mb@2x.jpg');"></div>
+          <div class="ring"></div>
+          <div class="vlabel">Ulster University</div>
+        </div>
+        <div class="vcard">
+          <div class="bg" style="background-image:url('https://www.hp.com/content/dam/sites/worldwide/solutions/ulster-case-study/hp_support_services_mb@2x.jpg');"></div>
+          <div class="ring"></div>
+          <div class="vlabel">HP Poly touchscreen, in the room</div>
+        </div>
+        <div class="vcard">
+          <div class="bg" style="background-image:url('https://www.hp.com/content/dam/sites/worldwide/solutions/ulster-case-study/discover_the_future_of_work_2_pc@2x.jpg');"></div>
+          <div class="ring"></div>
+          <div class="vlabel">Bekaert boosts efficiency with device management</div>
+        </div>
+        <div class="vcard">
+          <div class="bg" style="background-image:url('https://www.hp.com/content/dam/sites/worldwide/solutions/ulster-case-study/discover_the_future_of_work_4_pc@2x.jpg');"></div>
+          <div class="ring"></div>
+          <div class="vlabel">Poly x TAFE NSW: the campus of the future</div>
+        </div>
+        <div class="vcard">
+          <div class="bg" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-releases/2026/mission44.jpg');"></div>
+          <div class="ring"></div>
+          <div class="vlabel">HP and Mission 44, expanding to the UK</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="recessed-section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">Also This Week</div>
+        <h2>More from the newsroom</h2>
+      </div>
+      <div class="story-grid">
+        <a class="card small" href="#">
+          <div class="card-media"><div class="bg" style="background-image:url('https://www.hp.com/content/dam/hpi/newsroom/press/evergreen-banners/garage-hero-3.jpg');"></div></div>
+          <div class="card-body">
+            <div class="kicker">Thought Leadership</div>
+            <h3>HP recognized as a leader in the 2026 Gartner® Magic Quadrant™ for DEX tools</h3>
+          </div>
+        </a>
+        <a class="card small" href="#">
+          <div class="card-media"><div class="bg" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-releases/2026/hp-research-who-has-the-remote/June%20threat%20report%20top%20image%20high%20res.jpg');"></div></div>
+          <div class="card-body">
+            <div class="kicker">Thought Leadership</div>
+            <h3>Who has the remote? Attackers turning legitimate tools into backdoors</h3>
+          </div>
+        </a>
+        <a class="card small" href="#">
+          <div class="card-media"><div class="bg" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-blogs/2026/protecting-the-promise-behind-every-genuine-hp-printer-cartridge/Ink%20Cartridge%20Press%20release%20(1).png');"></div></div>
+          <div class="card-body">
+            <div class="kicker">Thought Leadership</div>
+            <h3>Protecting the promise behind every genuine HP printer cartridge</h3>
+          </div>
+        </a>
+        <a class="card small" href="#">
+          <div class="card-media"><div class="bg" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-releases/2026/hp-debuts-ai-powered-unified-collaboration-ecosystem-at-infocomm-2026/HP%20Poly%20Lens%20+%20WXP_Lifestyle.png');"></div></div>
+          <div class="card-body">
+            <div class="kicker">Innovation</div>
+            <h3>HP debuts AI-powered unified collaboration ecosystem at InfoComm 2026</h3>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="more-section wrap">
+    <div class="section-head">
+      <div class="kicker">Press Resources</div>
+      <h2>More</h2>
+    </div>
+    <div class="more-list">
+      <a href="#">HP Imagine 2026 press kit <span class="arrow">→</span></a>
+      <a href="#">HP at CES 2026 press kit <span class="arrow">→</span></a>
+      <a href="#">HP Amplify Conference 2025 press kit <span class="arrow">→</span></a>
+      <a href="#">HP at CES 2025 press kit <span class="arrow">→</span></a>
+      <a href="#">HP Amplify AI press kit <span class="arrow">→</span></a>
+      <a href="mailto:mediarelations@hp.com">Media contact: mediarelations@hp.com <span class="arrow">→</span></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>© 2026 HP Development Company, L.P.</span>
+  <span>Studio is a preliminary design concept, not a live HP property.</span>
+</footer>
+
+<script>
+  // Stripe System: one-time scroll-triggered reveal rather than a
+  // continuous loop, per Studio's "premium pacing, restraint" direction.
+  const el = document.getElementById('stripeDivider');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { el.classList.add('in-view'); io.disconnect(); } });
+  }, { threshold: 0.4 });
+  io.observe(el);
+</script>
+
+</body>
+</html>

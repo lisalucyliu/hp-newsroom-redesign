@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hard Copy — HP Newsroom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ===================================================================
+     BRAND TOKENS — pulled from HP Technical Guidelines (brand-tokens.md)
+     Font substitution note: HP Forma DJR is a licensed font not available
+     for a quick web prototype. Archivo (headlines) + Inter (body) stand
+     in as free geometric sans-serifs with a similar temperament. Swap
+     for HP Forma DJR UI in production.
+     =================================================================== */
+  :root{
+    --electric-blue:#024AD8;
+    --electric-blue-7:#024AD8;
+    --electric-blue-9:#0E3191;
+    --electric-blue-1:#C9E0FC;
+    --electric-blue-0:#E4EEFA;
+    --power-storm-6:#568393;
+    --power-storm-2:#B1D0DC;
+    --orange-bloom-5:#FF5050;
+    --orange-bloom-1:#F9D4D2;
+    --black:#000000;
+    --white:#FFFFFF;
+    --ink:#111213;
+    --paper:#FAFAF9;
+    --hairline: rgba(0,0,0,0.1);
+    --headline-font:'Archivo', sans-serif;
+    --body-font:'Inter', sans-serif;
+    /* margin fix: minimum 24px on every non-full-bleed section, scaling
+       up to 64px on wide desktop viewports */
+    --gutter: clamp(24px, 5vw, 64px);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:var(--body-font);
+    color:var(--ink);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+  img,svg{display:block; max-width:100%;}
+  .wrap{max-width:1280px; margin:0 auto; padding:0 var(--gutter);}
+
+  /* ---------- utility nav bar (masthead identity) ---------- */
+  .masthead{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px var(--gutter); border-bottom:1px solid var(--hairline);
+    background:var(--white);
+  }
+  .brand-lockup{display:flex; align-items:center; gap:12px;}
+  .hp-logo{width:28px; height:28px; flex-shrink:0;}
+  .lockup-name{display:flex; flex-direction:column; line-height:1.05;}
+  .lockup-name .name{font-family:var(--headline-font); font-weight:800; font-size:19px; letter-spacing:-0.3px;}
+  .lockup-name .sub{font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:#6b6b6b; margin-top:2px;}
+  .masthead-right{display:flex; align-items:center; gap:22px; font-size:13px; color:#444;}
+  .masthead-right a:hover{color:var(--electric-blue);}
+  .search-icon{width:18px; height:18px; border:1.6px solid #444; border-radius:50%; position:relative; display:inline-block;}
+  .search-icon::after{content:""; position:absolute; width:7px; height:1.6px; background:#444; right:-6px; bottom:1px; transform:rotate(45deg);}
+
+  /* ---------- primary pillar nav ---------- */
+  .pillar-nav{
+    background:var(--ink); border-bottom:3px solid var(--electric-blue);
+  }
+  .pillar-nav ul{
+    display:flex; gap:0; list-style:none; overflow-x:auto;
+    padding-left:calc(var(--gutter) - 22px);
+  }
+  .pillar-nav a{
+    display:block; padding:13px 22px; color:var(--white);
+    font-size:13px; font-weight:600; letter-spacing:0.3px;
+    white-space:nowrap; border-right:1px solid rgba(255,255,255,0.08);
+    text-transform:capitalize;
+  }
+  .pillar-nav a.active, .pillar-nav a:hover{background:var(--electric-blue);}
+
+  /* ---------- hero: full horizontal bleed image, punny masthead ----------
+     Sticky note: "full horizontal bleed image up top"
+     Sticky note: "Punny name for the newsroom. Gives a sense of
+     tongue-in-cheek fun, unique identity" -> masthead lockup "Hard Copy"
+     Sticky note: "movement in graphics catches attention of user eyes"
+     -> animated stripe system overlay
+  ---------------------------------------------------------------------- */
+  .hero{
+    position:relative; width:100%; min-height:78vh;
+    background:
+      linear-gradient(120deg, rgba(2,10,40,.78), rgba(2,10,40,.25) 55%, rgba(2,10,40,.82)),
+      url("https://www.hp.com/content/dam/sites/garage-press/press/press-kits/2026/hp-imagine/HP%20Imagine%20OPK%20Header.jpg") center/cover no-repeat,
+      #051033;
+    color:var(--white); display:flex; flex-direction:column; justify-content:flex-end;
+    overflow:hidden;
+  }
+  /* Blue is the dominant brand color per brand-tokens.md — the stripe
+     group here is mostly Electric Blue with a single thin Orange Bloom
+     accent (not a second secondary color), so it reads as "moving
+     forward in HP blue" rather than three equal-weight color bands. */
+  .hero-stripes{position:absolute; inset:0; z-index:1; opacity:.9; pointer-events:none;}
+  .hero-stripes .stripe{
+    position:absolute; top:-10%; width:10%; height:130%; background:var(--electric-blue);
+    transform:skewX(-20deg); animation:stripe-move 7s ease-in-out infinite;
+  }
+  .hero-stripes .stripe.s2{width:6%; background:var(--electric-blue-9); animation-delay:.4s;}
+  .hero-stripes .stripe.s3{width:3%; background:var(--orange-bloom-5); opacity:.65; animation-delay:.9s;}
+  @keyframes stripe-move{
+    0%,100%{transform:skewX(-20deg) translateX(0) translateY(0);}
+    50%{transform:skewX(-20deg) translateX(18px) translateY(-14px);}
+  }
+  .hero-inner{position:relative; z-index:2; padding:64px var(--gutter) 48px;}
+  .hero-eyebrow{
+    display:inline-flex; align-items:center; gap:8px; background:var(--orange-bloom-5);
+    color:var(--white); font-family:var(--headline-font); font-weight:800; font-size:12px;
+    letter-spacing:1px; text-transform:uppercase; padding:6px 12px; margin-bottom:18px;
+  }
+  .hero-title{
+    font-family:var(--headline-font); font-weight:900; font-size:clamp(48px, 9vw, 116px);
+    line-height:0.92; letter-spacing:-2px; max-width:1000px;
+  }
+  .hero-title em{font-style:italic; color:var(--electric-blue-1);}
+  .hero-sub{font-size:18px; max-width:560px; margin:20px 0 28px; color:#dfe4f0; font-weight:400;}
+  .hero-cta{
+    display:inline-flex; align-items:center; gap:10px; background:var(--white); color:var(--ink);
+    font-family:var(--headline-font); font-weight:800; padding:14px 26px; font-size:14px;
+  }
+  .hero-cta:hover{background:var(--electric-blue-0);}
+
+  /* quick pillar pills under hero, "tune into the latest" style row */
+  .quick-row{background:var(--ink); padding:16px 0;}
+  .quick-row .wrap{display:flex; align-items:center; gap:14px; overflow-x:auto;}
+  .quick-row .label{color:var(--white); font-family:var(--headline-font); font-weight:800; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; white-space:nowrap;}
+  .pill{
+    border:1px solid rgba(255,255,255,.3); color:var(--white); font-size:12.5px; font-weight:600;
+    padding:7px 14px; border-radius:100px; white-space:nowrap;
+  }
+  .pill:hover{background:var(--white); color:var(--ink);}
+
+  /* ---------- section heading ---------- */
+  /* NOTE: padding-top/padding-bottom only (not the `padding` shorthand) —
+     this element also carries the .wrap class for left/right gutter, and
+     a shorthand here would silently zero out .wrap's side padding since
+     both rules target the same element. This was the margin bug. */
+  .section{padding-top:56px; padding-bottom:56px;}
+  .section-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:26px;}
+  .section-head h2{font-family:var(--headline-font); font-weight:800; font-size:30px; letter-spacing:-0.5px;}
+  .section-head .view-all{font-size:13px; font-weight:600; color:var(--electric-blue); border-bottom:2px solid var(--electric-blue); padding-bottom:2px;}
+
+  /* ---------- mixed feed: hard news + human stories side by side ----------
+     No borders on cards (imitating Spotify): definition comes from a very
+     faint shadow instead, plus hover state does the rest of the work.
+  ---------------------------------------------------------------------- */
+  .feed-grid{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:24px;}
+  .card{
+    background:var(--white); display:flex; flex-direction:column;
+    box-shadow:0 1px 3px rgba(0,0,0,.05);
+  }
+  .card-media{
+    aspect-ratio:16/10; position:relative; overflow:hidden; display:flex;
+    align-items:flex-end; padding:16px;
+  }
+  .card.feature .card-media{aspect-ratio:16/11.5;}
+  .media-bg{
+    position:absolute; inset:0; background-size:cover; background-position:center;
+    background-color:#0A2162; transition:transform .5s cubic-bezier(.2,.7,.3,1);
+  }
+  .card:hover .media-bg{transform:scale(1.08);}
+  .tag{
+    position:relative; z-index:2;
+    font-family:var(--headline-font); font-weight:800; font-size:10.5px; letter-spacing:1px;
+    text-transform:uppercase; padding:5px 9px; display:inline-block; width:fit-content;
+    background:var(--white); color:var(--ink);
+  }
+  .tag.news{background:var(--electric-blue); color:var(--white);}
+  .tag.thought{background:var(--power-storm-6); color:var(--white);}
+  .tag.customer{background:var(--orange-bloom-5); color:var(--white);}
+  .tag.innovation{background:var(--ink); color:var(--white);}
+  .card-body{padding:18px; display:flex; flex-direction:column; gap:8px; flex:1;}
+  /* Underline every wrapped line on hover, not just the last one.
+     A background-gradient underline only paints once at the element's
+     bottom edge, so on a 2-3 line headline it looked like only the
+     final line was underlined. Native text-decoration wraps per line
+     correctly, so we fade it in via text-decoration-color instead. */
+  .card h3{
+    font-family:var(--headline-font); font-weight:700; font-size:19px; line-height:1.3; letter-spacing:-0.2px;
+    text-decoration-line:underline; text-decoration-color:transparent;
+    text-decoration-thickness:2px; text-underline-offset:3px;
+    transition:text-decoration-color .3s ease;
+  }
+  .card:hover h3{text-decoration-color:currentColor;}
+  .card.feature h3{font-size:27px;}
+  .card p{font-size:13.5px; color:#555; line-height:1.5;}
+  .card .meta{font-size:11.5px; color:#999; margin-top:auto; padding-top:10px;}
+
+  /* ---------- high-contrast color-block callout, chunky type ----------
+     Sticky note: "high contrast color sections, unique and chunky typeface"
+  ---------------------------------------------------------------------- */
+  .callout{
+    background:var(--electric-blue); color:var(--white); padding:72px 0; position:relative; overflow:hidden;
+  }
+  .callout .stripe-deco{position:absolute; right:-40px; top:-20%; width:220px; height:140%; background:rgba(255,255,255,.08); transform:skewX(-20deg);}
+  .callout h2{
+    font-family:var(--headline-font); font-weight:900; font-size:clamp(34px,5vw,58px);
+    line-height:1.04; letter-spacing:-1px; max-width:820px; position:relative; z-index:1;
+  }
+  .callout h2 .hl{color:var(--orange-bloom-5);}
+  .callout p{margin-top:18px; max-width:560px; font-size:16px; color:#e4ecff; position:relative; z-index:1;}
+
+  /* ---------- horizontally scrollable carousel ----------
+     Sticky note: "carousel tells the user that more content is
+     horizontally scrollable"
+  ---------------------------------------------------------------------- */
+  .carousel-wrap{position:relative;}
+  .carousel{
+    display:flex; gap:18px; overflow-x:auto; scroll-snap-type:x mandatory;
+    padding-bottom:8px; scrollbar-width:thin;
+  }
+  .carousel::-webkit-scrollbar{height:6px;}
+  .carousel::-webkit-scrollbar-thumb{background:var(--electric-blue-1); border-radius:4px;}
+  .kit-card{
+    flex:0 0 260px; scroll-snap-align:start; position:relative; overflow:hidden;
+    aspect-ratio:3/4; box-shadow:0 1px 3px rgba(0,0,0,.15);
+  }
+  .kit-media{
+    position:absolute; inset:0; background-size:cover; background-position:center;
+    background-color:#111; transition:transform .5s cubic-bezier(.2,.7,.3,1);
+  }
+  .kit-card:hover .kit-media{transform:scale(1.08);}
+  .kit-scrim{position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.75), rgba(0,0,0,0) 55%);}
+  .kit-content{position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding:18px; color:var(--white);}
+  .kit-content .kit-tag{font-family:var(--headline-font); font-size:10.5px; letter-spacing:1px; text-transform:uppercase; color:var(--electric-blue-1); font-weight:800; margin-bottom:8px;}
+  .kit-content h4{
+    font-family:var(--headline-font); font-weight:700; font-size:18px; line-height:1.3;
+    text-decoration-line:underline; text-decoration-color:transparent;
+    text-decoration-thickness:2px; text-underline-offset:3px;
+    transition:text-decoration-color .3s ease;
+  }
+  .kit-card:hover h4{text-decoration-color:currentColor;}
+  .carousel-hint{
+    display:flex; align-items:center; gap:8px; font-size:12px; color:#888; margin-top:10px;
+  }
+  .carousel-hint .arrow{
+    display:inline-block; width:26px; height:26px; border-radius:50%; border:1.4px solid #ccc;
+    text-align:center; line-height:24px; animation:nudge 1.6s ease-in-out infinite;
+  }
+  @keyframes nudge{0%,100%{transform:translateX(0);} 50%{transform:translateX(5px);}}
+
+  /* ---------- bold capping "read more" banner ----------
+     Sticky note: "visually capping the news with a bold 'READ MORE' sign"
+  ---------------------------------------------------------------------- */
+  .cap-banner{
+    background:var(--ink); color:var(--white);
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    padding:26px var(--gutter); font-family:var(--headline-font); font-weight:900;
+    font-size:clamp(20px,3vw,32px); letter-spacing:.5px; text-align:center;
+  }
+  .cap-banner:hover{background:var(--electric-blue);}
+  .cap-banner .arrow-big{font-weight:400;}
+
+  footer{background:var(--white); border-top:1px solid var(--hairline); padding:40px 0; font-size:12.5px; color:#777;}
+  footer .foot-grid{display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px;}
+  footer a{margin-right:16px;}
+  footer a:hover{color:var(--electric-blue);}
+
+  @media (max-width:900px){
+    .feed-grid{grid-template-columns:1fr;}
+    .masthead-right span.hide-mobile{display:none;}
+    .hero{min-height:66vh;}
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="brand-lockup">
+    <svg class="hp-logo" viewBox="0 0 32 32" fill="var(--electric-blue)" aria-label="HP logo">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M16.04 0 12.6 9.65h2.34c1.69 0 2.4 1.33 1.87 2.82l-3.42 9.6H9.95L13.7 11.5h-1.77L8.17 22.07H4.7L12.43.4a16 16 0 0 0-.33 31.12L19.9 9.6h5.66c1.17 0 2.64.79 2 2.58l-3.17 8.97c-.4 1.14-1.37 1.37-2.14 1.37h-3.48L15.4 32l.6.01a16 16 0 0 0 .04-32Zm6.67 11.48-3.28 9.2h1.74l3.28-9.2h-1.74Z"></path>
+    </svg>
+    <div class="lockup-name">
+      <span class="name">Hard Copy</span>
+      <span class="sub">HP Newsroom</span>
+    </div>
+  </div>
+  <div class="masthead-right">
+    <span class="hide-mobile">mediarelations@hp.com</span>
+    <a href="#">Press Kit</a>
+    <span class="search-icon"></span>
+  </div>
+</div>
+
+<nav class="pillar-nav">
+  <div class="wrap" style="padding-left:0; padding-right:0;">
+    <ul>
+      <li><a href="#" class="active">News &amp; Announcements</a></li>
+      <li><a href="#">Thought Leadership</a></li>
+      <li><a href="#">Customer Stories</a></li>
+      <li><a href="#">Innovation</a></li>
+      <li><a href="#">Press Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-stripes">
+    <div class="stripe s1" style="left:62%;"></div>
+    <div class="stripe s2" style="left:70%;"></div>
+    <div class="stripe s3" style="left:78%;"></div>
+  </div>
+  <div class="hero-inner">
+    <span class="hero-eyebrow">Campaign hub</span>
+    <h1 class="hero-title">Imagine<br><em>2026.</em></h1>
+    <p class="hero-sub">HP's flagship innovation showcase returns — where the future of work gets a release date.</p>
+    <a href="#" class="hero-cta">Explore the showcase →</a>
+  </div>
+</header>
+
+<div class="quick-row">
+  <div class="wrap">
+    <span class="label">Tune in</span>
+    <a class="pill" href="#">OpenAI Partnership</a>
+    <a class="pill" href="#">HP Wolf Security</a>
+    <a class="pill" href="#">Sustainability</a>
+    <a class="pill" href="#">Life at HP</a>
+    <a class="pill" href="#">Investor Relations</a>
+  </div>
+</div>
+
+<main>
+  <section class="section wrap">
+    <div class="section-head">
+      <h2>Latest news</h2>
+      <a class="view-all" href="#">View all news</a>
+    </div>
+    <div class="feed-grid">
+
+      <a class="card feature" href="field-notes-article.html">
+        <div class="card-media">
+          <div class="media-bg" style="background-image:url('https://www.hp.com/content/dam/hpi/newsroom/press/evergreen-banners/garage-hero-3.jpg');"></div>
+          <span class="tag news">News &amp; Announcements</span>
+        </div>
+        <div class="card-body">
+          <h3>HP and OpenAI launch a Frontier partnership to shape the future of work</h3>
+          <p>HP is integrating OpenAI's Frontier platform into its customer-facing experiences and internal operations — read how.</p>
+          <span class="meta">Press Release · Aug 2026</span>
+        </div>
+      </a>
+
+      <a class="card" href="#">
+        <div class="card-media">
+          <div class="media-bg" style="background-image:url('https://www.hp.com/content/dam/sites/worldwide/solutions/ulster-case-study/hero_banner@2x.jpg');"></div>
+          <span class="tag customer">Customer Stories</span>
+        </div>
+        <div class="card-body">
+          <h3>How Ulster University kept 3,000 staff connected across every campus</h3>
+          <p>HP Managed Collaboration Services gave a growing UK university one consistent experience.</p>
+          <span class="meta">Customer Story</span>
+        </div>
+      </a>
+
+      <a class="card" href="#">
+        <div class="card-media">
+          <div class="media-bg" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-releases/2026/hp-shifts-into-a-new-gear-with-ferrari,-fueling-pc-innovation-with-shared-design-and-engineering-vision/HP%20Limited%20Edition%20Scuderia%20Ferrari%20AI%20PC_BlackBG%20(002).png');"></div>
+          <span class="tag news">News &amp; Announcements</span>
+        </div>
+        <div class="card-body">
+          <h3>HP shifts into a new gear with Ferrari, fueling PC innovation</h3>
+          <p>A shared design and engineering vision — plus a limited-edition Scuderia Ferrari AI PC.</p>
+          <span class="meta">Press Release · 2026</span>
+        </div>
+      </a>
+
+      <a class="card" href="#">
+        <div class="card-media">
+          <div class="media-bg" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-releases/2026/hp-research-who-has-the-remote/June%20threat%20report%20top%20image%20high%20res.jpg');"></div>
+          <span class="tag thought">Thought Leadership</span>
+        </div>
+        <div class="card-body">
+          <h3>Who has the remote? Attackers are turning legitimate tools into backdoors</h3>
+          <p>New HP threat research on remote access tools being weaponized.</p>
+          <span class="meta">HP Research</span>
+        </div>
+      </a>
+
+      <a class="card" href="#">
+        <div class="card-media">
+          <div class="media-bg" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-blogs/2026/hp-and-adobe-bring-digital-twin-capture-built-for-scale-/Z%20Portfolio_CAPTIS_1920_Lifestyle.png');"></div>
+          <span class="tag innovation">Innovation</span>
+        </div>
+        <div class="card-body">
+          <h3>HP and Adobe bring digital twin capture built for scale</h3>
+          <p>HP Z Captis, with Adobe Substance 3D Sampler and NVIDIA Jetson AI inference.</p>
+          <span class="meta">Innovation</span>
+        </div>
+      </a>
+
+      <a class="card" href="#">
+        <div class="card-media">
+          <div class="media-bg" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-releases/2026/hp-debuts-ai-powered-unified-collaboration-ecosystem-at-infocomm-2026/HP%20Poly%20Lens%20+%20WXP_Lifestyle.png');"></div>
+          <span class="tag innovation">Innovation</span>
+        </div>
+        <div class="card-body">
+          <h3>HP debuts AI-powered unified collaboration ecosystem at InfoComm 2026</h3>
+          <p>Poly Lens and the Workforce Experience Platform, brought together.</p>
+          <span class="meta">Press Release · 2026</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="callout">
+    <div class="stripe-deco"></div>
+    <div class="wrap">
+      <h2>Everyone wants to <span class="hl">love</span> the work they do.</h2>
+      <p>That's the human truth behind everything HP builds — and the story behind every headline in this newsroom.</p>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="section-head">
+      <h2>Press resources</h2>
+      <a class="view-all" href="#">All press kits</a>
+    </div>
+    <div class="carousel-wrap">
+      <div class="carousel">
+        <div class="kit-card">
+          <div class="kit-media" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-kits/2026/hp-imagine/HP%20Imagine%20OPK%20Header.jpg');"></div>
+          <div class="kit-scrim"></div>
+          <div class="kit-content"><span class="kit-tag">Press Kit</span><h4>HP Imagine 2026</h4></div>
+        </div>
+        <div class="kit-card">
+          <div class="kit-media" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-kits/2026/hp-at-ces-2026/CES26%20Main%20OPK%20Header.png');"></div>
+          <div class="kit-scrim"></div>
+          <div class="kit-content"><span class="kit-tag">Press Kit</span><h4>HP at CES 2026</h4></div>
+        </div>
+        <div class="kit-card">
+          <div class="kit-media" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-releases/2025/amplify-conference/AC25%20Amplify%20Program%20Press%20Release%20Header.jpg');"></div>
+          <div class="kit-scrim"></div>
+          <div class="kit-content"><span class="kit-tag">Press Kit</span><h4>HP Amplify Conference 2025</h4></div>
+        </div>
+        <div class="kit-card">
+          <div class="kit-media" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-kits/2025/ces-2025/OPK_Header.png');"></div>
+          <div class="kit-scrim"></div>
+          <div class="kit-content"><span class="kit-tag">Press Kit</span><h4>HP at CES 2025</h4></div>
+        </div>
+        <div class="kit-card">
+          <div class="kit-media" style="background-image:url('https://www.hp.com/content/dam/sites/garage-press/press/press-kits/2024/hp-amplify/Personal%20Systems-1.png');"></div>
+          <div class="kit-scrim"></div>
+          <div class="kit-content"><span class="kit-tag">Press Kit</span><h4>HP Amplify AI</h4></div>
+        </div>
+      </div>
+      <div class="carousel-hint"><span class="arrow">→</span> Scroll for more press kits</div>
+    </div>
+  </section>
+
+  <a class="cap-banner" href="#">View all news <span class="arrow-big">→</span></a>
+</main>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <a href="#">About HP</a>
+      <a href="#">Investor Relations</a>
+      <a href="#">Careers</a>
+      <a href="#">Sustainability</a>
+      <a href="#">Media Contacts</a>
+    </div>
+    <div>© 2026 HP Development Company, L.P.</div>
+  </div>
+</footer>
+
+</body>
+</html>

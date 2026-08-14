@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HP and OpenAI launch a Frontier partnership — HP Newsroom Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Same tokens + the padding-shorthand/gutter rule as studio-homepage.html. */
+  :root{
+    --electric-blue:#024AD8; --electric-blue-1:#C9E0FC; --electric-blue-0:#E4EEFA;
+    --orange-bloom-5:#FF5050; --ink:#141416; --paper:#FFFFFF; --recessed:#F3F3F1;
+    --headline-font:'Archivo', sans-serif; --body-font:'Inter', sans-serif;
+    --gutter: clamp(24px, 6vw, 96px);
+    --radius: 22px;
+    --shadow-card: 0 1px 2px rgba(0,0,0,.04), 0 12px 28px rgba(20,20,22,.08);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:var(--body-font); color:var(--ink); background:var(--paper); -webkit-font-smoothing:antialiased;}
+  a{color:inherit; text-decoration:none;}
+  img,svg{display:block; max-width:100%;}
+  .wrap{max-width:1240px; margin:0 auto; padding:0 var(--gutter);}
+  .article-wrap{max-width:760px; margin:0 auto; padding:0 var(--gutter);}
+
+  .masthead{
+    display:flex; align-items:center; justify-content:space-between;
+    height:52px; padding:0 var(--gutter);
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.045);
+  }
+  .brand-lockup{display:flex; align-items:center; gap:10px;}
+  .hp-logo{width:22px; height:22px; flex-shrink:0;}
+  .brand-lockup .name{font-family:var(--headline-font); font-weight:700; font-size:16px; letter-spacing:-0.2px;}
+  .back-link{font-size:13.5px; font-weight:600; color:#555;}
+  .back-link:hover{color:var(--ink);}
+
+  /* ---------- big, big header text for the story view ----------
+     Sticky note: "big big header text for the story view" */
+  .story-head{padding-top:64px; padding-bottom:36px;}
+  .kicker{font-family:var(--headline-font); font-weight:600; font-size:12px; letter-spacing:2.5px; text-transform:uppercase; color:var(--electric-blue); margin-bottom:20px;}
+  .story-head h1{
+    font-family:var(--headline-font); font-weight:700; letter-spacing:-1.5px; line-height:1.02;
+    font-size:clamp(40px, 7vw, 84px);
+  }
+
+  /* ---------- direct author / press contact ----------
+     Sticky note: "journalistic integrity - direct contacts of the
+     authors" — a named, reachable byline rather than an anonymous post. */
+  .byline{
+    display:flex; align-items:center; gap:14px; margin-top:28px; padding-top:24px;
+    box-shadow: inset 0 1px 0 rgba(0,0,0,.08);
+  }
+  .byline .avatar{width:38px; height:38px; border-radius:50%; background:var(--electric-blue-0); color:var(--electric-blue); font-family:var(--headline-font); font-weight:700; font-size:13px; display:flex; align-items:center; justify-content:center;}
+  .byline .who{font-size:13.5px; line-height:1.4;}
+  .byline .who .n{font-weight:600;}
+  .byline .who a{color:var(--electric-blue); font-weight:600;}
+
+  .lede{padding-top:40px; padding-bottom:8px; font-family:var(--headline-font); font-weight:500; font-size:22px; line-height:1.5; max-width:680px;}
+
+  .source-note{
+    font-size:13px; color:#777; box-shadow: inset 3px 0 0 var(--electric-blue);
+    padding:12px 18px; margin:22px 0 8px; background:var(--electric-blue-0); border-radius:0 12px 12px 0;
+  }
+  .source-note a{color:var(--electric-blue); font-weight:600;}
+
+  /* ---------- full vertical images, scrollable-gallery structure ----------
+     Sticky notes: "structure of the article is determined by the huge
+     vertical images, almost like a scrollable gallery with captions" and
+     "visual focus on detailed physical object. Full vertical image
+     shown, no cutoffs." object-fit:contain guarantees nothing is
+     cropped regardless of the source photo's native aspect ratio. */
+  .gallery-block{margin:64px 0;}
+  .gallery-figure{border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-card); background:#EDEDED;}
+  .gallery-figure .frame{width:100%; height:78vh; max-height:920px; display:flex; align-items:center; justify-content:center; background:#111;}
+  .gallery-figure img{width:100%; height:100%; object-fit:contain;}
+  .gallery-figure figcaption{
+    font-size:13px; color:#666; padding:16px 20px; box-shadow: inset 0 1px 0 rgba(0,0,0,.06);
+  }
+
+  .story-body{font-size:18px; line-height:1.75; max-width:680px;}
+  .story-body p{margin-bottom:24px;}
+
+  /* ---------- minimal "more" / continue-reading, no card treatment ---------- */
+  .more-section{padding-top:56px; padding-bottom:96px;}
+  .more-section .kicker{margin-bottom:18px;}
+  .more-list{display:flex; flex-direction:column; max-width:680px;}
+  .more-list a{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 0; font-family:var(--headline-font); font-weight:600; font-size:17px;
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.06);
+  }
+  .more-list a span.arrow{font-family:var(--body-font); font-weight:400; color:#999; transition:transform .25s ease;}
+  .more-list a:hover span.arrow{transform:translateX(4px); color:var(--electric-blue);}
+
+  footer{padding:36px var(--gutter); box-shadow: inset 0 1px 0 rgba(0,0,0,.045); font-size:12.5px; color:#888; text-align:center;}
+
+  @media (max-width:760px){
+    .gallery-figure .frame{height:56vh;}
+    .story-body{font-size:16.5px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="brand-lockup">
+    <svg class="hp-logo" viewBox="0 0 32 32" fill="var(--electric-blue)" aria-label="HP logo">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M16.04 0 12.6 9.65h2.34c1.69 0 2.4 1.33 1.87 2.82l-3.42 9.6H9.95L13.7 11.5h-1.77L8.17 22.07H4.7L12.43.4a16 16 0 0 0-.33 31.12L19.9 9.6h5.66c1.17 0 2.64.79 2 2.58l-3.17 8.97c-.4 1.14-1.37 1.37-2.14 1.37h-3.48L15.4 32l.6.01a16 16 0 0 0 .04-32Zm6.67 11.48-3.28 9.2h1.74l3.28-9.2h-1.74Z"></path>
+    </svg>
+    <span class="name">Newsroom</span>
+  </div>
+  <a class="back-link" href="studio-homepage.html">← Newsroom</a>
+</div>
+
+<div class="wrap">
+  <div class="story-head">
+    <div class="kicker">News &amp; Announcements</div>
+    <h1>HP and OpenAI. Building the future of work together.</h1>
+    <div class="byline">
+      <div class="avatar">HP</div>
+      <div class="who">
+        <div class="n">HP Newsroom Staff</div>
+        <div>Media inquiries — <a href="mailto:mediarelations@hp.com">mediarelations@hp.com</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<article class="article-wrap">
+  <p class="lede">Today, HP Inc. (NYSE: HPQ) announced the launch of a strategic partnership with OpenAI, integrating its Frontier platform into HP's global efforts to shape the Future of Work through enhanced customer-facing experiences and accelerated transformation across its operations.</p>
+
+  <div class="source-note">
+    This lede is quoted verbatim from HP's live press release. Per the assignment brief, article content isn't rewritten here — only the surrounding container, pacing, and imagery are new. <a href="https://www.hp.com/us-en/newsroom/press-releases/2026/open-ai-partnership.html" target="_blank">Continue reading the full release on HP.com →</a>
+  </div>
+
+  <div class="gallery-block">
+    <figure class="gallery-figure">
+      <div class="frame"><img src="https://www.hp.com/content/dam/hpi/newsroom/press/evergreen-banners/garage-hero-3.jpg" alt="Abstract double-exposure cityscape used across HP's Frontier partnership coverage"></div>
+      <figcaption>HP's global efforts to shape the Future of Work now run partly on OpenAI's Frontier platform.</figcaption>
+    </figure>
+  </div>
+
+  <div class="story-body">
+    <p>In this layout, the rest of the release body would flow here at full length, styled in the same restrained editorial type used across Studio — sourced live from HP's newsroom CMS rather than rebuilt by hand.</p>
+  </div>
+
+  <div class="gallery-block">
+    <figure class="gallery-figure">
+      <div class="frame"><img src="https://www.hp.com/content/dam/sites/garage-press/press/press-releases/2026/hp-debuts-pcs-built-for-the-agentic-ai-era/HP%20-%20Omnibook%20Press%20Release%20(1).png" alt="HP OmniBook press image, shown in full without cropping"></div>
+      <figcaption>Elsewhere in the same push: PCs built for the agentic AI era, powered by NVIDIA RTX Spark™.</figcaption>
+    </figure>
+  </div>
+
+  <div class="story-body">
+    <p class="lede" style="font-size:20px;">Shape the future of work.</p>
+  </div>
+
+  <div class="gallery-block">
+    <figure class="gallery-figure">
+      <div class="frame"><img src="https://www.hp.com/content/dam/sites/garage-press/press/press-blogs/2026/hp-and-adobe-bring-digital-twin-capture-built-for-scale-/Z%20Portfolio_CAPTIS_1920_Lifestyle.png" alt="HP Z Captis digital twin capture device, shown in full"></div>
+      <figcaption>HP Z Captis: digital twin capture, built for scale — Adobe Substance 3D Sampler and NVIDIA Jetson AI inference.</figcaption>
+    </figure>
+  </div>
+</article>
+
+<section class="more-section wrap">
+  <div class="kicker">Continue Reading</div>
+  <div class="more-list">
+    <a href="#">HP and Mission 44 expand partnership to the UK <span class="arrow">→</span></a>
+    <a href="#">HP shifts into a new gear with Ferrari, fueling PC innovation <span class="arrow">→</span></a>
+    <a href="#">HP recognized as a leader in the 2026 Gartner® Magic Quadrant™ for DEX tools <span class="arrow">→</span></a>
+  </div>
+</section>
+
+<footer>© 2026 HP Development Company, L.P. — Studio is a preliminary design concept, not a live HP property.</footer>
+
+</body>
+</html>
